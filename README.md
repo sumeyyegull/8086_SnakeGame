@@ -87,4 +87,4 @@ Yılan, LED Dot Matrix üzerinde hareket ederken skor ve oyun durumu LCD ekranda
 
 ## Geliştirici
 
-Proje, 8086 Mikroişlemci dersi kapsamında Assembly dili ve Proteus simülasyonu kullanılarak geliştirilmiştir.
+Proje, 8086 Mikroişlemciler dersi kapsamında Assembly dili ve Proteus simülasyonu kullanılarak geliştirilmiştir.
