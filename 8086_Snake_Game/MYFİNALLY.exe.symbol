@@ -1,0 +1,59 @@
+< THE SYMBOL TABLE >  MYFÝNALLY.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+VERI_SEGMENTI            	00000     	-5        	SEGMENT   	(ITSELF)  
+YILAN_X                  	00000     	1         	VAR       	VERI_SEGMENTI
+YILAN_Y                  	00040     	1         	VAR       	VERI_SEGMENTI
+MEVCUT_BOY               	00080     	1         	VAR       	VERI_SEGMENTI
+SUANKI_YON               	00081     	1         	VAR       	VERI_SEGMENTI
+SABIT_HIZ                	00082     	2         	VAR       	VERI_SEGMENTI
+ZAMAN_SAYACI             	00084     	2         	VAR       	VERI_SEGMENTI
+HEDEF_YEM_X              	00086     	1         	VAR       	VERI_SEGMENTI
+HEDEF_YEM_Y              	00087     	1         	VAR       	VERI_SEGMENTI
+YANIP_SONME_SAYAC        	00088     	1         	VAR       	VERI_SEGMENTI
+GORUNTU_RAM              	00089     	1         	VAR       	VERI_SEGMENTI
+LCD_TEMP                 	00091     	1         	VAR       	VERI_SEGMENTI
+KOD_SEGMENTI             	0000A     	-5        	SEGMENT   	(ITSELF)  
+BASLANGIC                	00000     	-1        	LABEL     	KOD_SEGMENTI
+ANA_DONGU                	00039     	-1        	LABEL     	KOD_SEGMENTI
+BEKLEME_LOOP             	00042     	-1        	LABEL     	KOD_SEGMENTI
+HAREKET_ISLEMLERI        	00050     	-1        	LABEL     	KOD_SEGMENTI
+KAYDIRMA                 	0005A     	-1        	LABEL     	KOD_SEGMENTI
+GIT_SAG                  	00084     	-1        	LABEL     	KOD_SEGMENTI
+GIT_SOL                  	0008A     	-1        	LABEL     	KOD_SEGMENTI
+GIT_ASAGI                	00090     	-1        	LABEL     	KOD_SEGMENTI
+GIT_YUKARI               	00096     	-1        	LABEL     	KOD_SEGMENTI
+DUVAR_KONTROL            	0009C     	-1        	LABEL     	KOD_SEGMENTI
+CARPISMA_TESTI           	000B7     	-1        	LABEL     	KOD_SEGMENTI
+TEST_DEVAM               	000C9     	-1        	LABEL     	KOD_SEGMENTI
+YON_KONTROL_ET           	00102     	-1        	NEAR      	KOD_SEGMENTI
+AYARLA_SOL               	00120     	-1        	LABEL     	KOD_SEGMENTI
+AYARLA_SAG               	0012E     	-1        	LABEL     	KOD_SEGMENTI
+AYARLA_ASAGI             	0013C     	-1        	LABEL     	KOD_SEGMENTI
+AYARLA_YUKARI            	0014A     	-1        	LABEL     	KOD_SEGMENTI
+YON_CIKIS                	00158     	-1        	LABEL     	KOD_SEGMENTI
+OYUN_BITTI_GIRIS         	0015B     	-1        	LABEL     	KOD_SEGMENTI
+FLASOR_LOOP              	0015E     	-1        	LABEL     	KOD_SEGMENTI
+DOL                      	00164     	-1        	LABEL     	KOD_SEGMENTI
+DOL_WAIT                 	0016F     	-1        	LABEL     	KOD_SEGMENTI
+BOS                      	0017C     	-1        	LABEL     	KOD_SEGMENTI
+BOS_WAIT                 	00187     	-1        	LABEL     	KOD_SEGMENTI
+EKRAN_CIZIMI_HAZIRLA     	00190     	-1        	NEAR      	KOD_SEGMENTI
+TEMIZLE_LP               	0019B     	-1        	LABEL     	KOD_SEGMENTI
+YILAN_CIZ_L              	001C8     	-1        	LABEL     	KOD_SEGMENTI
+YILAN_LOOP_L             	001D1     	-1        	LABEL     	KOD_SEGMENTI
+MATRISI_SUR              	001EE     	-1        	NEAR      	KOD_SEGMENTI
+TARAMA_L                 	00201     	-1        	LABEL     	KOD_SEGMENTI
+BEKLE_L                  	00215     	-1        	LABEL     	KOD_SEGMENTI
+GECIKME_LCD              	0022A     	-1        	NEAR      	KOD_SEGMENTI
+DLY_LCD                  	0022E     	-1        	LABEL     	KOD_SEGMENTI
+LCD_KOMUT                	00233     	-1        	NEAR      	KOD_SEGMENTI
+LCD_VERI                 	00250     	-1        	NEAR      	KOD_SEGMENTI
+LCD_INIT                 	0026D     	-1        	NEAR      	KOD_SEGMENTI
+SKOR_GUNCELLE            	00286     	-1        	NEAR      	KOD_SEGMENTI
+GAME_OVER_YAZ            	002B9     	-1        	NEAR      	KOD_SEGMENTI
+===================================================================================================
+[ 6.01.2026  --  14:30:55 ] 
+< END >
+ 
