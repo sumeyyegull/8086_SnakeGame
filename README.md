@@ -5,7 +5,12 @@ Oyun, Proteus simülasyonu ile çalıştırılmakta olup, grafiksel gösterim 8x
 
 Repoda iki farklı versiyon bulunmaktadır:
 - Versiyon 1 – Harici RAM/ROM içermeyen temel Proteus simülasyonu (klasör: 8086_Snake_Game)
+  
+  <img width="1579" height="426" alt="Ekran görüntüsü 2026-01-06 134402" src="https://github.com/user-attachments/assets/137c9bcf-fdf2-4aef-9635-f05058d3b986" />
+
 - Versiyon 2 – Harici RAM & ROM ile tam donanım simülasyonu (klasör: Ramli Proje)
+  
+<img width="1800" height="677" alt="Ekran görüntüsü 2026-01-06 142531" src="https://github.com/user-attachments/assets/688dea0b-142c-48aa-bef5-7c4a01d9f98f" />
 
 ## Proje Amacı
 
@@ -61,12 +66,13 @@ Temel bileşenler:
 3. Görüntüleme ve Oyun Mantığı – LED Dot Matrix çoklama ile sürülür, yılanın gövdesi güncellenir, yem yendiğinde skor artar
    - Yılan kendi gövdesine çarptığında: LCD’de “GAME OVER” mesajı ve LED matris yanıp sönme efekti
 
-## Çalışma Anı (Ekran Görüntüsü)
+## Çalışma Anı 
 
 Aşağıdaki ekran görüntüsü, oyunun Proteus simülasyonu sırasında çalışırken nasıl göründüğünü göstermektedir.  
 Yılan, LED Dot Matrix üzerinde hareket ederken skor ve oyun durumu LCD ekranda görüntülenmektedir.
 
-![Çalışma Anı](images/calisma_ani.png)
+<img width="309" height="398" alt="Ekran görüntüsü 2026-01-29 133540" src="https://github.com/user-attachments/assets/a09e1cbe-4d6b-4f41-be75-78875fe4709c" />
+
 
 ## Simülasyon Notları
 
