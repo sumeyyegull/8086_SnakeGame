@@ -1,0 +1,383 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+ramversion22.bin -- emu8086 assembler version: 4.08  
+ 
+[ 2.01.2026  --  12:04:24 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;====================================================================
+[   2]        :                                       ; PROJE: OTOMATÝK YILAN OYUNU V2.1 (FIXED)
+[   3]        :                                       ;====================================================================
+[   4]        :                                       
+[   5]        :                                       RAM_SEGMENTI SEGMENT AT 0000H
+[   6]        :                                       ORG 0000H
+[   7]    0000: 00 00 00 00 00 00 00 00 00 00 00 00   YILAN_X      DB 64 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[   8]    0040: 00 00 00 00 00 00 00 00 00 00 00 00   YILAN_Y      DB 64 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[   9]    0080: 00                                    MEVCUT_BOY   DB ?
+[  10]    0081: 00                                    SUANKI_YON   DB ?
+[  11]    0082: 00 00                                 SABIT_HIZ    DW ?
+[  12]    0084: 00 00                                 ZAMAN_SAYACI DW ?
+[  13]    0086: 00                                    HEDEF_YEM_X  DB ?
+[  14]    0087: 00                                    HEDEF_YEM_Y  DB ?
+[  15]    0088: 00                                    YANIP_SONME_SAYAC DB ?
+[  16]    0089: 00 00 00 00 00 00 00 00               GORUNTU_RAM  DB 8 DUP(?)
+[  17]    0091: 00 00 00 00 00 00 00 00 00 00 00 00   DB 256 DUP(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  18]    0191:                                       STACK_TOP LABEL BYTE
+[  19]        :                                       RAM_SEGMENTI ENDS
+[  20]        :                                       
+[  21]        :                                       KOD_SEGMENTI SEGMENT
+[  22]        :                                       ASSUME CS:KOD_SEGMENTI, DS:RAM_SEGMENTI, SS:RAM_SEGMENTI
+[  23]        :                                       ORG 0000H
+[  24]        :                                       
+[  25]        :                                       ;=======================================================================
+[  26]        :                                       ; PROSEDÜRLER (HATA VERMEMESÝ ÝÇÝN EN BAÞA ALINDI)
+[  27]        :                                       ;=======================================================================
+[  28]        :                                       
+[  29]        :                                       ;--- TUÞ OKUMA PROSEDÜRÜ ---
+[  30]    01A0:                                       YON_KONTROL_ET PROC NEAR
+[  31]    01A0: 50                                    PUSH AX
+[  32]    01A1: E4 04                                 IN AL, 04H             ; Port C Oku
+[  33]    01A3: 24 0F                                 AND AL, 0FH            ; Sadece ilk 4 biti al
+[  34]    01A5: 3C 0F                                 CMP AL, 0FH
+[  35]    01A7: 74 2C                                 JE YON_RET             ; Basýlý deðilse (Pull-up sebebiyle F gelir) dön
+[  36]        :                                       
+[  37]    01A9: A8 01                                 TEST AL, 01H
+[  38]    01AB: 74 0E                                 JZ SET_SAG
+[  39]    01AD: A8 02                                 TEST AL, 02H
+[  40]    01AF: 74 11                                 JZ SET_SOL
+[  41]    01B1: A8 04                                 TEST AL, 04H
+[  42]    01B3: 74 14                                 JZ SET_ASAGI
+[  43]    01B5: A8 08                                 TEST AL, 08H
+[  44]    01B7: 74 17                                 JZ SET_YUKARI
+[  45]    01B9: EB 1A                                 JMP YON_RET
+[  46]        :                                       
+[  47]    01BB: C6 06 81 00 00                        SET_SAG:   MOV SUANKI_YON, 0
+[  48]    01C0: EB 13                                 JMP YON_RET
+[  49]    01C2: C6 06 81 00 01                        SET_SOL:   MOV SUANKI_YON, 1
+[  50]    01C7: EB 0C                                 JMP YON_RET
+[  51]    01C9: C6 06 81 00 02                        SET_ASAGI: MOV SUANKI_YON, 2
+[  52]    01CE: EB 05                                 JMP YON_RET
+[  53]    01D0: C6 06 81 00 03                        SET_YUKARI:MOV SUANKI_YON, 3
+[  54]    01D5:                                       YON_RET:
+[  55]    01D5: 58                                    POP AX
+[  56]    01D6: C3                                    RET
+[  57]        :                                       YON_KONTROL_ET ENDP
+[  58]        :                                       
+[  59]        :                                       ;--- MATRÝS SÜRME PROSEDÜRÜ ---
+[  60]    01D7:                                       MATRISI_SUR PROC NEAR
+[  61]    01D7: 50                                    PUSH AX
+[  62]    01D8: 53                                    PUSH BX
+[  63]    01D9: 51                                    PUSH CX
+[  64]    01DA: 56                                    PUSH SI
+[  65]    01DB: B9 08 00                              MOV CX, 8
+[  66]    01DE: BE 00 00                              MOV SI, 0
+[  67]    01E1: B7 01                                 MOV BH, 01H
+[  68]    01E3:                                       SCAN_L:
+[  69]    01E3: 8A C7                                 MOV AL, BH
+[  70]    01E5: E6 00                                 OUT 00H, AL            ; Satýr
+[  71]    01E7: 8A 84 89 00                           MOV AL, GORUNTU_RAM[SI]
+[  72]    01EB: F6 D0                                 NOT AL                 ; Sütun (Active Low)
+[  73]    01ED: E6 02                                 OUT 02H, AL
+[  74]        :                                       
+[  75]    01EF: 51                                    PUSH CX
+[  76]    01F0: B9 64 00                              MOV CX, 100            ; Gecikme
+[  77]    01F3: 90                                    WAIT_L: NOP
+[  78]    01F4: E2 FD                                 LOOP WAIT_L
+[  79]    01F6: 59                                    POP CX
+[  80]        :                                       
+[  81]    01F7: B0 00                                 MOV AL, 0
+[  82]    01F9: E6 00                                 OUT 00H, AL            ; Temizle
+[  83]    01FB: D0 C7                                 ROL BH, 1
+[  84]    01FD: 46                                    INC SI
+[  85]    01FE: E2 E3                                 LOOP SCAN_L
+[  86]    0200: 5E                                    POP SI
+[  87]    0201: 59                                    POP CX
+[  88]    0202: 5B                                    POP BX
+[  89]    0203: 58                                    POP AX
+[  90]    0204: C3                                    RET
+[  91]        :                                       MATRISI_SUR ENDP
+[  92]        :                                       
+[  93]        :                                       ;--- EKRAN ÇÝZÝM PROSEDÜRÜ ---
+[  94]    0205:                                       EKRAN_CIZIMI_HAZIRLA PROC NEAR
+[  95]    0205: 50                                    PUSH AX
+[  96]    0206: 53                                    PUSH BX
+[  97]    0207: 51                                    PUSH CX
+[  98]    0208: 56                                    PUSH SI
+[  99]    0209: 57                                    PUSH DI
+[ 100]        :                                       
+[ 101]        :                                       ; RAM Temizle
+[ 102]    020A: B9 08 00                              MOV CX, 8
+[ 103]    020D: BE 00 00                              MOV SI, 0
+[ 104]    0210:                                       CLR_LOOP:
+[ 105]    0210: C6 84 89 00 00                        MOV GORUNTU_RAM[SI], 0
+[ 106]    0215: 46                                    INC SI
+[ 107]    0216: E2 F8                                 LOOP CLR_LOOP
+[ 108]        :                                       
+[ 109]        :                                       ; Yem Çiz
+[ 110]    0218: FE 06 88 00                           INC YANIP_SONME_SAYAC
+[ 111]    021C: F6 06 88 00 01                        TEST YANIP_SONME_SAYAC, 1
+[ 112]    0221: 74 1A                                 JZ DRAW_SNAKE
+[ 113]        :                                       
+[ 114]    0223: 8A 1E 86 00                           MOV BL, HEDEF_YEM_X
+[ 115]    0227: 8A 3E 87 00                           MOV BH, HEDEF_YEM_Y
+[ 116]    022B: BE 00 00                              MOV SI, 0
+[ 117]    022E: 8A C7                                 MOV AL, BH
+[ 118]    0230: 98                                    CBW
+[ 119]    0231: 8B F0                                 MOV SI, AX
+[ 120]    0233: 8A CB                                 MOV CL, BL
+[ 121]    0235: B0 01                                 MOV AL, 1
+[ 122]    0237: D2 E0                                 SHL AL, CL
+[ 123]    0239: 08 84 89 00                           OR GORUNTU_RAM[SI], AL
+[ 124]        :                                       
+[ 125]    023D:                                       DRAW_SNAKE:
+[ 126]    023D: 8A 0E 80 00                           MOV CL, MEVCUT_BOY
+[ 127]    0241: B5 00                                 MOV CH, 0
+[ 128]    0243: BF 00 00                              MOV DI, 0
+[ 129]    0246:                                       SNAKE_LOOP:
+[ 130]    0246: 8A 45 40                              MOV AL, YILAN_Y[DI]
+[ 131]    0249: 98                                    CBW
+[ 132]    024A: 8B F0                                 MOV SI, AX
+[ 133]    024C: 8A 15                                 MOV DL, YILAN_X[DI]
+[ 134]    024E: B0 01                                 MOV AL, 1
+[ 135]    0250: 51                                    PUSH CX
+[ 136]    0251: 8A CA                                 MOV CL, DL
+[ 137]    0253: D2 E0                                 SHL AL, CL
+[ 138]    0255: 59                                    POP CX
+[ 139]    0256: 08 84 89 00                           OR GORUNTU_RAM[SI], AL
+[ 140]    025A: 47                                    INC DI
+[ 141]    025B: E2 E9                                 LOOP SNAKE_LOOP
+[ 142]        :                                       
+[ 143]    025D: 5F                                    POP DI
+[ 144]    025E: 5E                                    POP SI
+[ 145]    025F: 59                                    POP CX
+[ 146]    0260: 5B                                    POP BX
+[ 147]    0261: 58                                    POP AX
+[ 148]    0262: C3                                    RET
+[ 149]        :                                       EKRAN_CIZIMI_HAZIRLA ENDP
+[ 150]        :                                       
+[ 151]        :                                       ;=======================================================================
+[ 152]        :                                       ; ANA PROGRAM BAÞLANGICI
+[ 153]        :                                       ;=======================================================================
+[ 154]    0263:                                       BASLANGIC:
+[ 155]    0263: FA                                    CLI
+[ 156]        :                                       
+[ 157]        :                                       ;--- SEGMENT AYARLARI ---
+[ 158]    0264: B8 00 00                              MOV AX, 0000H
+[ 159]    0267: 8E D8                                 MOV DS, AX
+[ 160]    0269: 8E D0                                 MOV SS, AX
+[ 161]    026B: BC 91 01                              MOV SP, OFFSET STACK_TOP
+[ 162]        :                                       
+[ 163]        :                                       ;--- 8255 AYARI ---
+[ 164]    026E: B0 89                                 MOV AL, 89H
+[ 165]    0270: E6 06                                 OUT 06H, AL
+[ 166]        :                                       
+[ 167]        :                                       ;--- ÝLK DEÐERLER ---
+[ 168]    0272: C6 06 80 00 03                        MOV MEVCUT_BOY, 3
+[ 169]    0277: C6 06 81 00 00                        MOV SUANKI_YON, 0
+[ 170]    027C: C7 06 82 00 5A 00                     MOV SABIT_HIZ, 90
+[ 171]    0282: C6 06 86 00 04                        MOV HEDEF_YEM_X, 4
+[ 172]    0287: C6 06 87 00 02                        MOV HEDEF_YEM_Y, 2
+[ 173]    028C: C6 06 88 00 00                        MOV YANIP_SONME_SAYAC, 0
+[ 174]        :                                       
+[ 175]    0291: C6 06 00 00 02                        MOV YILAN_X[0], 2
+[ 176]    0296: C6 06 40 00 03                        MOV YILAN_Y[0], 3
+[ 177]    029B: C6 06 01 00 01                        MOV YILAN_X[1], 1
+[ 178]    02A0: C6 06 41 00 03                        MOV YILAN_Y[1], 3
+[ 179]    02A5: C6 06 02 00 00                        MOV YILAN_X[2], 0
+[ 180]    02AA: C6 06 42 00 03                        MOV YILAN_Y[2], 3
+[ 181]        :                                       
+[ 182]    02AF:                                       ANA_DONGU:
+[ 183]    02AF: E8 53 FF                              CALL EKRAN_CIZIMI_HAZIRLA
+[ 184]        :                                       
+[ 185]    02B2: A1 82 00                              MOV AX, SABIT_HIZ
+[ 186]    02B5: A3 84 00                              MOV ZAMAN_SAYACI, AX
+[ 187]        :                                       
+[ 188]    02B8:                                       BEKLEME_LOOP:
+[ 189]    02B8: E8 1C FF                              CALL MATRISI_SUR
+[ 190]    02BB: E8 E2 FE                              CALL YON_KONTROL_ET    ; ARTIK HATA VERMEZ!
+[ 191]        :                                       
+[ 192]    02BE: FF 0E 84 00                           DEC ZAMAN_SAYACI
+[ 193]    02C2: 75 F4                                 JNZ BEKLEME_LOOP
+[ 194]        :                                       
+[ 195]    02C4: EB 00                                 JMP HAREKET_ISLEMLERI
+[ 196]        :                                       
+[ 197]        :                                       ;--- HAREKET MANTIÐI ---
+[ 198]    02C6:                                       HAREKET_ISLEMLERI:
+[ 199]        :                                       ; Gövde Kaydýr
+[ 200]    02C6: 8A 0E 80 00                           MOV CL, MEVCUT_BOY
+[ 201]    02CA: FE C9                                 DEC CL
+[ 202]    02CC: B5 00                                 MOV CH, 0
+[ 203]    02CE: 8B F1                                 MOV SI, CX
+[ 204]    02D0:                                       KAYDIRMA:
+[ 205]    02D0: 8A 44 FF                              MOV AL, YILAN_X[SI-1]
+[ 206]    02D3: 88 04                                 MOV YILAN_X[SI], AL
+[ 207]    02D5: 8A 44 3F                              MOV AL, YILAN_Y[SI-1]
+[ 208]    02D8: 88 44 40                              MOV YILAN_Y[SI], AL
+[ 209]    02DB: 4E                                    DEC SI
+[ 210]    02DC: 75 F2                                 JNZ KAYDIRMA
+[ 211]        :                                       
+[ 212]        :                                       ; Baþ Hareket
+[ 213]    02DE: 80 3E 81 00 00                        CMP SUANKI_YON, 0
+[ 214]    02E3: 74 17                                 JE GIT_SAG
+[ 215]    02E5: 80 3E 81 00 01                        CMP SUANKI_YON, 1
+[ 216]    02EA: 74 16                                 JE GIT_SOL
+[ 217]    02EC: 80 3E 81 00 02                        CMP SUANKI_YON, 2
+[ 218]    02F1: 74 15                                 JE GIT_ASAGI
+[ 219]    02F3: 80 3E 81 00 03                        CMP SUANKI_YON, 3
+[ 220]    02F8: 74 14                                 JE GIT_YUKARI
+[ 221]    02FA: EB 18                                 JMP DUVAR_KONTROL
+[ 222]        :                                       
+[ 223]    02FC: FE 06 00 00                           GIT_SAG:  INC YILAN_X[0]
+[ 224]    0300: EB 12                                 JMP DUVAR_KONTROL
+[ 225]    0302: FE 0E 00 00                           GIT_SOL:  DEC YILAN_X[0]
+[ 226]    0306: EB 0C                                 JMP DUVAR_KONTROL
+[ 227]    0308: FE 06 40 00                           GIT_ASAGI:INC YILAN_Y[0]
+[ 228]    030C: EB 06                                 JMP DUVAR_KONTROL
+[ 229]    030E: FE 0E 40 00                           GIT_YUKARI:DEC YILAN_Y[0]
+[ 230]    0312: EB 00                                 JMP DUVAR_KONTROL
+[ 231]        :                                       
+[ 232]    0314:                                       DUVAR_KONTROL:
+[ 233]    0314: A0 00 00                              MOV AL, YILAN_X[0]
+[ 234]    0317: 24 07                                 AND AL, 07H
+[ 235]    0319: A2 00 00                              MOV YILAN_X[0], AL
+[ 236]    031C: A0 40 00                              MOV AL, YILAN_Y[0]
+[ 237]    031F: 24 07                                 AND AL, 07H
+[ 238]    0321: A2 40 00                              MOV YILAN_Y[0], AL
+[ 239]        :                                       
+[ 240]        :                                       ; Çarpýþma
+[ 241]    0324: 8A 0E 80 00                           MOV CL, MEVCUT_BOY
+[ 242]    0328: FE C9                                 DEC CL
+[ 243]    032A: B5 00                                 MOV CH, 0
+[ 244]    032C: BE 01 00                              MOV SI, 1
+[ 245]    032F:                                       CARPISMA_TESTI:
+[ 246]    032F: A0 00 00                              MOV AL, YILAN_X[0]
+[ 247]    0332: 3A 04                                 CMP AL, YILAN_X[SI]
+[ 248]    0334: 75 08                                 JNE TEST_DEVAM
+[ 249]    0336: A0 40 00                              MOV AL, YILAN_Y[0]
+[ 250]    0339: 3A 44 40                              CMP AL, YILAN_Y[SI]
+[ 251]    033C: 74 36                                 JE OYUN_BITTI_GIRIS
+[ 252]    033E:                                       TEST_DEVAM:
+[ 253]    033E: 46                                    INC SI
+[ 254]    033F: E2 EE                                 LOOP CARPISMA_TESTI
+[ 255]        :                                       
+[ 256]        :                                       ; Yem Kontrol
+[ 257]    0341: A0 00 00                              MOV AL, YILAN_X[0]
+[ 258]    0344: 3A 06 86 00                           CMP AL, HEDEF_YEM_X
+[ 259]    0348: 74 03 E9 62 FF                        JNE ANA_DONGU
+[ 260]    034D: A0 40 00                              MOV AL, YILAN_Y[0]
+[ 261]    0350: 3A 06 87 00                           CMP AL, HEDEF_YEM_Y
+[ 262]    0354: 74 03 E9 56 FF                        JNE ANA_DONGU
+[ 263]        :                                       
+[ 264]        :                                       ; Yem Yendi
+[ 265]    0359: FE 06 80 00                           INC MEVCUT_BOY
+[ 266]        :                                       
+[ 267]    035D: A0 86 00                              MOV AL, HEDEF_YEM_X
+[ 268]    0360: 04 05                                 ADD AL, 5
+[ 269]    0362: 24 07                                 AND AL, 07H
+[ 270]    0364: A2 86 00                              MOV HEDEF_YEM_X, AL
+[ 271]    0367: A0 87 00                              MOV AL, HEDEF_YEM_Y
+[ 272]    036A: 04 03                                 ADD AL, 3
+[ 273]    036C: 24 07                                 AND AL, 07H
+[ 274]    036E: A2 87 00                              MOV HEDEF_YEM_Y, AL
+[ 275]        :                                       
+[ 276]    0371: E9 3B FF                              JMP ANA_DONGU
+[ 277]        :                                       
+[ 278]        :                                       ;--- OYUN BÝTÝÞ ---
+[ 279]    0374:                                       OYUN_BITTI_GIRIS:
+[ 280]    0374: B9 08 00                              MOV CX, 8
+[ 281]    0377: BE 00 00                              MOV SI, 0
+[ 282]    037A:                                       FULL_ON:
+[ 283]    037A: C6 84 89 00 FF                        MOV GORUNTU_RAM[SI], 0FFH
+[ 284]    037F: 46                                    INC SI
+[ 285]    0380: E2 F8                                 LOOP FULL_ON
+[ 286]    0382: E8 52 FE                              CALL MATRISI_SUR
+[ 287]    0385: E8 4F FE                              CALL MATRISI_SUR
+[ 288]        :                                       
+[ 289]    0388: B9 08 00                              MOV CX, 8
+[ 290]    038B: BE 00 00                              MOV SI, 0
+[ 291]    038E:                                       FULL_OFF:
+[ 292]    038E: C6 84 89 00 00                        MOV GORUNTU_RAM[SI], 00H
+[ 293]    0393: 46                                    INC SI
+[ 294]    0394: E2 F8                                 LOOP FULL_OFF
+[ 295]    0396: E8 3E FE                              CALL MATRISI_SUR
+[ 296]    0399: E8 3B FE                              CALL MATRISI_SUR
+[ 297]    039C: EB D6                                 JMP OYUN_BITTI_GIRIS
+[ 298]        :                                       
+[ 299]        :                                       KOD_SEGMENTI ENDS
+[ 300]        :                                       END BASLANGIC
+[ 301]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 9E      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 03      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 00      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 00      -   SP - stack pointer (h.byte)
+0012: 5A      -   check sum (l.byte)
+0013: 4D      -   check sum (h.byte)
+0014: 23      -   IP - instruction pointer (l.byte)
+0015: FF      -   IP - instruction pointer (h.byte)
+0016: 1A      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

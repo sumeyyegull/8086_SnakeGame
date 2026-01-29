@@ -1,0 +1,49 @@
+< THE SYMBOL TABLE >  ramversion22.bin  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+RAM_SEGMENTI             	00000     	-5        	SEGMENT   	(ITSELF)  
+YILAN_X                  	00000     	1         	VAR       	RAM_SEGMENTI
+YILAN_Y                  	00040     	1         	VAR       	RAM_SEGMENTI
+MEVCUT_BOY               	00080     	1         	VAR       	RAM_SEGMENTI
+SUANKI_YON               	00081     	1         	VAR       	RAM_SEGMENTI
+SABIT_HIZ                	00082     	2         	VAR       	RAM_SEGMENTI
+ZAMAN_SAYACI             	00084     	2         	VAR       	RAM_SEGMENTI
+HEDEF_YEM_X              	00086     	1         	VAR       	RAM_SEGMENTI
+HEDEF_YEM_Y              	00087     	1         	VAR       	RAM_SEGMENTI
+YANIP_SONME_SAYAC        	00088     	1         	VAR       	RAM_SEGMENTI
+GORUNTU_RAM              	00089     	1         	VAR       	RAM_SEGMENTI
+STACK_TOP                	00191     	-1        	LABEL     	RAM_SEGMENTI
+KOD_SEGMENTI             	0001A     	-5        	SEGMENT   	(ITSELF)  
+YON_KONTROL_ET           	FFFFFE60  	-1        	NEAR      	KOD_SEGMENTI
+SET_SAG                  	FFFFFE7B  	-1        	LABEL     	KOD_SEGMENTI
+SET_SOL                  	FFFFFE82  	-1        	LABEL     	KOD_SEGMENTI
+SET_ASAGI                	FFFFFE89  	-1        	LABEL     	KOD_SEGMENTI
+SET_YUKARI               	FFFFFE90  	-1        	LABEL     	KOD_SEGMENTI
+YON_RET                  	FFFFFE95  	-1        	LABEL     	KOD_SEGMENTI
+MATRISI_SUR              	FFFFFE97  	-1        	NEAR      	KOD_SEGMENTI
+SCAN_L                   	FFFFFEA3  	-1        	LABEL     	KOD_SEGMENTI
+WAIT_L                   	FFFFFEB3  	-1        	LABEL     	KOD_SEGMENTI
+EKRAN_CIZIMI_HAZIRLA     	FFFFFEC5  	-1        	NEAR      	KOD_SEGMENTI
+CLR_LOOP                 	FFFFFED0  	-1        	LABEL     	KOD_SEGMENTI
+DRAW_SNAKE               	FFFFFEFD  	-1        	LABEL     	KOD_SEGMENTI
+SNAKE_LOOP               	FFFFFF06  	-1        	LABEL     	KOD_SEGMENTI
+BASLANGIC                	FFFFFF23  	-1        	LABEL     	KOD_SEGMENTI
+ANA_DONGU                	FFFFFF6F  	-1        	LABEL     	KOD_SEGMENTI
+BEKLEME_LOOP             	FFFFFF78  	-1        	LABEL     	KOD_SEGMENTI
+HAREKET_ISLEMLERI        	FFFFFF86  	-1        	LABEL     	KOD_SEGMENTI
+KAYDIRMA                 	FFFFFF90  	-1        	LABEL     	KOD_SEGMENTI
+GIT_SAG                  	FFFFFFBC  	-1        	LABEL     	KOD_SEGMENTI
+GIT_SOL                  	FFFFFFC2  	-1        	LABEL     	KOD_SEGMENTI
+GIT_ASAGI                	FFFFFFC8  	-1        	LABEL     	KOD_SEGMENTI
+GIT_YUKARI               	FFFFFFCE  	-1        	LABEL     	KOD_SEGMENTI
+DUVAR_KONTROL            	FFFFFFD4  	-1        	LABEL     	KOD_SEGMENTI
+CARPISMA_TESTI           	FFFFFFEF  	-1        	LABEL     	KOD_SEGMENTI
+TEST_DEVAM               	FFFFFFFE  	-1        	LABEL     	KOD_SEGMENTI
+OYUN_BITTI_GIRIS         	00034     	-1        	LABEL     	KOD_SEGMENTI
+FULL_ON                  	0003A     	-1        	LABEL     	KOD_SEGMENTI
+FULL_OFF                 	0004E     	-1        	LABEL     	KOD_SEGMENTI
+===================================================================================================
+[ 2.01.2026  --  12:04:24 ] 
+< END >
+ 
